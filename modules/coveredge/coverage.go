@@ -1,4 +1,4 @@
-package coveredge
+package coverage
 
 import (
 	"bufio"
