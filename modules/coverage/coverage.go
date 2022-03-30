@@ -56,7 +56,7 @@ func WriteConvergeFiles(t *testing.T, c *terraform.Options, moduleName string) {
 			if err != nil {
 				log.Fatalln(err)
 			}
-			eachline = strings.Replace(eachline, "\"", "\\\"", -1)
+			eachline = strings.Replace(eachline, "\"", "'", -1)
 			resource_name := strings.Split(eachline, ".")
 			rn := fmt.Sprintf("case s == \"%s.%s\":\n\t\tlog.Println(\"check coverage\")", resource_name[len(resource_name)-2], resource_name[len(resource_name)-1])
 			if _, err := f.WriteString(rn + "\n"); err != nil {
