@@ -47,8 +47,7 @@ func WriteConvergeFiles(t *testing.T, c *terraform.Options, moduleName string) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	cn := fmt.Sprintf("mode: set\n%s/cover.go:%d.1,%d.0 1 1\n", moduleName)
-	if _, err := coverFile.WriteString(cn); err != nil {
+	if _, err := coverFile.WriteString("mode: set\n"); err != nil {
 		log.Fatalln(err)
 	}
 	line := 7
