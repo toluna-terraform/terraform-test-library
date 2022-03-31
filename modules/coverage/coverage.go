@@ -10,7 +10,18 @@ import (
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
+	"golang.org/x/mod/modfile"
 )
+
+func getModName() string {
+	modcontent, err := ioutil.ReadFile("go.mod")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	modulename := fmt.Sprintf("%s", modfile.ModulePath(modcontent))
+	return string(modulename)
+}
 
 func WriteCovergeFiles(t *testing.T, c *terraform.Options, moduleName string) {
 	if _, err := os.Stat("reports"); os.IsNotExist(err) {
