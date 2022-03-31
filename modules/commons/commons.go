@@ -8,7 +8,7 @@ import (
 	"golang.org/x/mod/modfile"
 )
 
-func getModName() string {
+func GetModName() string {
 	modcontent, err := ioutil.ReadFile("go.mod")
 	if err != nil {
 		log.Fatalln(err)
