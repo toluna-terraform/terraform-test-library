@@ -12,7 +12,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
-func WriteConvergeFiles(t *testing.T, c *terraform.Options, moduleName string) {
+func WriteCovergeFiles(t *testing.T, c *terraform.Options, moduleName string) {
 	if _, err := os.Stat("reports"); os.IsNotExist(err) {
 		os.MkdirAll("reports", 0700) // Create your file
 	}
