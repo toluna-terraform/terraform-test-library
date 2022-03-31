@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/gruntwork-io/terratest v0.40.6
-	golang.org/x/mod v0.4.2
+	golang.org/x/mod v0.5.1
 )
 
 require (
