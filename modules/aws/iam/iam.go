@@ -3,10 +3,11 @@ package tolunaiam
 import (
 	"fmt"
 	"log"
-	"modules/commons/tolunacommons"
 	"net/url"
 	"strings"
 	"testing"
+
+	tolunacommons "github.com/toluna-terraform/terraform-test-library/modules/commons"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/iam"

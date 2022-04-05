@@ -5,11 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"modules/commons/tolunacommons"
-
 	"github.com/aws/aws-sdk-go/service/codebuild"
 	aws_terratest "github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/stretchr/testify/assert"
+	tolunacommons "github.com/toluna-terraform/terraform-test-library/modules/commons"
 )
 
 func VerifyCodeBuildProject(t *testing.T, region string, project_name string) {
