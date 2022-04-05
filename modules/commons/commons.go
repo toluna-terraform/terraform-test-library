@@ -17,3 +17,13 @@ func GetModName() string {
 	modulename := fmt.Sprintf("%s", modfile.ModulePath(modcontent))
 	return string(modulename)
 }
+
+func ListContains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
+}
