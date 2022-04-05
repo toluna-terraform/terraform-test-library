@@ -48,3 +48,13 @@ func S3GetBucketPolicy(t *testing.T, region string, bucket string) S3BucketPolic
 	}
 	return bucketpolicy
 }
+
+func S3GetBucketACLs(t *testing.T, region string, bucket string) *s3.GetBucketAclOutput {
+	sess, err := aws_terratest.NewAuthenticatedSession(region)
+	svc := s3.New(sess)
+	result, err := svc.GetBucketAcl(&s3.GetBucketAclInput{Bucket: &bucket})
+	if err != nil {
+		assert.Nil(t, err, "Failed to get bucket ACL")
+	}
+	return result
+}
