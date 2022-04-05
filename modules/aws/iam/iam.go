@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func IAMGetRole(t *testing.T, region string, role_name string) {
+func VerifyIAMRoleExsits(t *testing.T, region string, role_name string) {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := iam.New(sess)
 	input := &iam.GetRoleInput{
