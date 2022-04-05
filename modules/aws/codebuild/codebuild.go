@@ -28,7 +28,7 @@ func VerifyCodeBuildProject(t *testing.T, region string, project_name string) {
 	assert.True(t, projectFound, fmt.Sprintf("Project %s not created", project_name))
 }
 
-func TestCodeBuildTestReportsGroups(t *testing.T, region string, reportList []string, app_name string) {
+func VerifyCodeBuildReportsGroups(t *testing.T, region string, reportList []string, app_name string) {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	if err != nil {
 		assert.Nil(t, err, "Failed to get Report group")
