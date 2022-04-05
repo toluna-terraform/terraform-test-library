@@ -27,3 +27,13 @@ func ListContains(s []string, str string) bool {
 
 	return false
 }
+
+func ListBoolContains(s []bool, str bool) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
+}

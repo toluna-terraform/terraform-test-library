@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func VerifyIAMRoleExists(t *testing.T, region string, role_name string) {
+func VerifyIAMRoleExists(t *testing.T, region string, role_name string) bool {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := iam.New(sess)
 	input := &iam.GetRoleInput{
@@ -23,12 +23,12 @@ func VerifyIAMRoleExists(t *testing.T, region string, role_name string) {
 	}
 	result, err := svc.GetRole(input)
 	if err != nil {
-		assert.Nil(t, err, "Failed to get Role")
+		return assert.Nil(t, err, "Failed to get Role")
 	}
-	assert.True(t, strings.HasSuffix(*result.Role.Arn, role_name), "Wrong role ARN returned")
+	return assert.True(t, strings.HasSuffix(*result.Role.Arn, role_name), "Wrong role ARN returned")
 }
 
-func VerifyAttachedPoliciesForRole(t *testing.T, region string, role_name string, policy_list []string) {
+func VerifyAttachedPoliciesForRole(t *testing.T, region string, role_name string, policy_list []string) bool {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := iam.New(sess)
 	input := &iam.ListAttachedRolePoliciesInput{
@@ -36,20 +36,25 @@ func VerifyAttachedPoliciesForRole(t *testing.T, region string, role_name string
 	}
 	result, err := svc.ListAttachedRolePolicies(input)
 	if err != nil {
-		assert.Nil(t, err, "Failed to get Role")
+		return assert.Nil(t, err, "Failed to get Policies")
 	}
 	policyList := []string{}
+	testResults := []bool{}
 	for _, policyName := range result.AttachedPolicies {
 		log.Printf("Verify policy %s for test framework role is attached", *policyName.PolicyName)
 		policyList = append(policyList, *policyName.PolicyName)
-		assert.True(t, tolunacommons.ListContains(policy_list, *policyName.PolicyName), fmt.Sprintf("Policy name %s not attached", *policyName.PolicyName))
+		testResults = append(testResults, assert.True(t, tolunacommons.ListContains(policy_list, *policyName.PolicyName), fmt.Sprintf("Policy name %s not attached", *policyName.PolicyName)))
 	}
 	for _, policyName := range policy_list {
-		assert.True(t, tolunacommons.ListContains(policyList, policyName), fmt.Sprintf("Policy name %s should not attached", policyName))
+		testResults = append(testResults, assert.True(t, tolunacommons.ListContains(policyList, policyName), fmt.Sprintf("Policy name %s should not attached", policyName)))
 	}
+	if tolunacommons.ListBoolContains(testResults, false) {
+		return false
+	}
+	return true
 }
 
-func VerifyRolePolicies(t *testing.T, region string, expectedPolicy string, role_name string, policy_name string) {
+func VerifyRolePolicies(t *testing.T, region string, expectedPolicy string, role_name string, policy_name string) bool {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := iam.New(sess)
 	input := &iam.GetRolePolicyInput{
@@ -58,14 +63,16 @@ func VerifyRolePolicies(t *testing.T, region string, expectedPolicy string, role
 	}
 	result, err := svc.GetRolePolicy(input)
 	if err != nil {
-		assert.Nil(t, err, "Failed to get Policy")
+		return assert.Nil(t, err, "Failed to get Policy")
 	}
 	encodedValue := *result.PolicyDocument
 	decodedValue, err := url.QueryUnescape(encodedValue)
 	if err != nil {
-		assert.Nil(t, err, "Failed to get Policy")
+		if err != nil {
+			return false
+		}
 	}
 	expPolicy := strings.ReplaceAll(expectedPolicy, "\t", "")
 	decodedPolicy := strings.ReplaceAll(decodedValue, " ", "")
-	assert.Equal(t, expPolicy, decodedPolicy, fmt.Sprintf("Policy document %s does not match expected document", expectedPolicy))
+	return assert.Equal(t, expPolicy, decodedPolicy, fmt.Sprintf("Policy document %s does not match expected document", expectedPolicy))
 }

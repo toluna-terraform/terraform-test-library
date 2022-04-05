@@ -2,6 +2,7 @@ package tolunacodebuild
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"testing"
 
@@ -11,13 +12,13 @@ import (
 	tolunacommons "github.com/toluna-terraform/terraform-test-library/modules/commons"
 )
 
-func VerifyCodeBuildProject(t *testing.T, region string, project_name string) {
+func VerifyCodeBuildProject(t *testing.T, region string, project_name string) bool {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := codebuild.New(sess)
 	input := &codebuild.ListProjectsInput{}
 	result, err := svc.ListProjects(input)
 	if err != nil {
-		assert.Nil(t, err, "Failed to get Policy")
+		return assert.Nil(t, err, "Failed to get Policy")
 	}
 	projectFound := false
 	for _, projectName := range result.Projects {
@@ -25,21 +26,27 @@ func VerifyCodeBuildProject(t *testing.T, region string, project_name string) {
 			projectFound = true
 		}
 	}
-	assert.True(t, projectFound, fmt.Sprintf("Project %s not created", project_name))
+	return assert.True(t, projectFound, fmt.Sprintf("Project %s not created", project_name))
 }
 
-func VerifyCodeBuildReportsGroups(t *testing.T, region string, reportList []string, app_name string) {
+func VerifyCodeBuildReportsGroups(t *testing.T, region string, reportList []string, app_name string) bool {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	if err != nil {
-		assert.Nil(t, err, "Failed to get Report group")
+		log.Println("Failed to get Policy", err)
+		return assert.Nil(t, err, "Failed to get Report group")
 	}
 	svc := codebuild.New(sess)
 	input := &codebuild.ListReportGroupsInput{}
 	result, err := svc.ListReportGroups(input)
+	testResults := []bool{}
 	for _, reportGroupName := range result.ReportGroups {
 		groupName := strings.Split(*reportGroupName, "/")
 		if strings.HasPrefix(groupName[1], app_name) {
-			assert.True(t, tolunacommons.ListContains(reportList, groupName[1]), fmt.Sprintf("Report group %s not created", groupName[1]))
+			testResults = append(testResults, assert.True(t, tolunacommons.ListContains(reportList, groupName[1]), fmt.Sprintf("Report group %s not created", groupName[1])))
 		}
 	}
+	if tolunacommons.ListBoolContains(testResults, false) {
+		return false
+	}
+	return true
 }
