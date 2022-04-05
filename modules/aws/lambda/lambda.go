@@ -6,7 +6,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/lambda"
 	aws_terratest "github.com/gruntwork-io/terratest/modules/aws"
-	"github.com/stretchr/testify/assert"
 )
 
 func GetLambdaLayer(t *testing.T, region string, layer_name string, layer_version int64) *lambda.GetLayerVersionOutput {
@@ -18,7 +17,7 @@ func GetLambdaLayer(t *testing.T, region string, layer_name string, layer_versio
 	}
 	result, err := svc.GetLayerVersion(input)
 	if err != nil {
-		assert.Nil(t, err, "Failed to get layer")
+		return nil
 	}
 	return result
 }
