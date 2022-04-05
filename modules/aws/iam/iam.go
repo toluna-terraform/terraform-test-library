@@ -3,10 +3,10 @@ package tolunaiam
 import (
 	"fmt"
 	"log"
+	"modules/commons/tolunacommons"
 	"net/url"
 	"strings"
 	"testing"
-	"tolunacommons"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/iam"
@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func VerifyIAMRoleExsits(t *testing.T, region string, role_name string) {
+func VerifyIAMRoleExists(t *testing.T, region string, role_name string) {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := iam.New(sess)
 	input := &iam.GetRoleInput{

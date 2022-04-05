@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"testing"
-	"tolunacommons"
+
+	"modules/commons/tolunacommons"
 
 	"github.com/aws/aws-sdk-go/service/codebuild"
 	aws_terratest "github.com/gruntwork-io/terratest/modules/aws"
