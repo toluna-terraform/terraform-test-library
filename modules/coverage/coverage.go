@@ -1,3 +1,4 @@
+/*This package should include functions for generating coverage reports*/
 package tolunacoverage
 
 import (
@@ -12,6 +13,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
+/* Generates a dynamic go file to map code coverage*/
 func WriteCovergeFiles(t *testing.T, c *terraform.Options, moduleName string) {
 	if _, err := os.Stat("reports"); os.IsNotExist(err) {
 		os.MkdirAll("reports", 0700) // Create your file
@@ -76,6 +78,7 @@ func WriteCovergeFiles(t *testing.T, c *terraform.Options, moduleName string) {
 	}
 }
 
+/*Marks a resource as covered by a test*/
 func MarkAsCovered(s string, moduleName string) {
 	f, err := os.Open("cover.go")
 	if err != nil {
