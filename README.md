@@ -1,5 +1,3 @@
-# 
-
 # terraform-test-library
 terraform-test-library is a [go](https://golang.org/) library for testing terraform modules along side using Terratest
 
