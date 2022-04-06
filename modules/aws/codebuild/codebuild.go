@@ -1,3 +1,4 @@
+/*This package should include functions for verifying Codebuild AWS service resources*/
 package tolunacodebuild
 
 import (
@@ -12,6 +13,7 @@ import (
 	tolunacommons "github.com/toluna-terraform/terraform-test-library/modules/commons"
 )
 
+/*Checks a codebuild project was created and returns bool [true|false]*/
 func VerifyCodeBuildProject(t *testing.T, region string, project_name string) bool {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := codebuild.New(sess)
@@ -29,6 +31,7 @@ func VerifyCodeBuildProject(t *testing.T, region string, project_name string) bo
 	return assert.True(t, projectFound, fmt.Sprintf("Project %s not created", project_name))
 }
 
+/*Checks a codebuild report groups where created and returns bool [true|false]*/
 func VerifyCodeBuildReportsGroups(t *testing.T, region string, reportList []string, app_name string) bool {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	if err != nil {

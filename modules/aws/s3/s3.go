@@ -1,3 +1,4 @@
+/*This package should include functions for verifying S3 AWS service resources*/
 package tolunas3aws
 
 import (
@@ -9,6 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+/*Checks a s3 bucket has Public Access Block and returns it's output*/
 func S3GetPublicAccessBlock(t *testing.T, region string, bucket string) *s3.GetPublicAccessBlockOutput {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := s3.New(sess)
@@ -26,6 +28,7 @@ type S3BucketPolicy struct {
 	Action    string `json:"Action"`
 }
 
+/*Checks a s3 bucket has a Policy and returns it's output as json*/
 func S3GetBucketPolicy(t *testing.T, region string, bucket string) S3BucketPolicy {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := s3.New(sess)
@@ -49,6 +52,7 @@ func S3GetBucketPolicy(t *testing.T, region string, bucket string) S3BucketPolic
 	return bucketpolicy
 }
 
+/*Checks a s3 bucket has ACL defined and returns it's output*/
 func S3GetBucketACLs(t *testing.T, region string, bucket string) *s3.GetBucketAclOutput {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := s3.New(sess)

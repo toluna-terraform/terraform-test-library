@@ -1,3 +1,4 @@
+/*This package should include functions for verifying Lambda AWS service resources*/
 package tolunalambda
 
 import (
@@ -8,6 +9,7 @@ import (
 	aws_terratest "github.com/gruntwork-io/terratest/modules/aws"
 )
 
+/*Checks a lambda layer was created and returns the lambda layer version*/
 func GetLambdaLayer(t *testing.T, region string, layer_name string, layer_version int64) *lambda.GetLayerVersionOutput {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := lambda.New(sess)

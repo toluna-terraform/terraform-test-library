@@ -1,3 +1,4 @@
+/*This package should include functions for verifying IAM AWS service resources*/
 package tolunaiam
 
 import (
@@ -15,6 +16,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+/*Checks a role was created and returns bool [true|false]*/
 func VerifyIAMRoleExists(t *testing.T, region string, role_name string) bool {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := iam.New(sess)
@@ -28,6 +30,7 @@ func VerifyIAMRoleExists(t *testing.T, region string, role_name string) bool {
 	return assert.True(t, strings.HasSuffix(*result.Role.Arn, role_name), "Wrong role ARN returned")
 }
 
+/*Checks a role has the correct attached policy and returns bool [true|false]*/
 func VerifyAttachedPoliciesForRole(t *testing.T, region string, role_name string, policy_list []string) bool {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := iam.New(sess)
@@ -54,6 +57,7 @@ func VerifyAttachedPoliciesForRole(t *testing.T, region string, role_name string
 	return true
 }
 
+/*Checks a role has the correct policy document and returns bool [true|false]*/
 func VerifyRolePolicies(t *testing.T, region string, expectedPolicy string, role_name string, policy_name string) bool {
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := iam.New(sess)
