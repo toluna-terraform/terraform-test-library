@@ -62,8 +62,8 @@ func VerifyRolePolicies(t *testing.T, region string, expectedPolicy string, role
 	sess, err := aws_terratest.NewAuthenticatedSession(region)
 	svc := iam.New(sess)
 	input := &iam.GetRolePolicyInput{
-		RoleName:   aws.String("role-my-app-non-prod-codebuild-publish-reports-my-app-non-prod"),
-		PolicyName: aws.String("policy-codebuild-publish-reports-my-app-non-prod"),
+		RoleName:   aws.String(role_name),
+		PolicyName: aws.String(policy_name),
 	}
 	result, err := svc.GetRolePolicy(input)
 	if err != nil {
